@@ -47,17 +47,23 @@ const register = async (req, res) => {
 
     if (existingUser) {
       console.log("User already exists!");
-      return res.status(400).json({ messsage: "User already exists" });
+      return res.status(400).json({ message: "UserName not available" });
     }
+
 
     // If no existing user is found, save the new user
     await newUser.save();
 
     console.log("User created successfully!");
-    res.status(201).json({ newUser, message: "new user created" });
+    res.status(201).json({message: "new user created"});
   } catch (err) {
-    console.error("An error occurred:", err);
-    res.status(500).json({ msg: "Internal Server Error" });
+
+    //if realName is missing
+    if(!data.realName) {
+      return res.status(500).json({message : "realName required"});
+      console.log("realname")
+    }
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
@@ -67,23 +73,26 @@ const login = async (req, res) => {
     const data = req.body;
     console.log(data);
     const user = await userModel.findOne({userName: data.userName});
-    if (!user) res.status(401).json({ message: "user not found" });
+    if (!user) { 
+      console.log("user not found"); 
+      return res.status(400).json({ message: "incorrect username or password" });}
     const pass_matched = await bcrypt.compare(data.password, user.password);
     if (pass_matched) {
       const token = jwt.sign(
         { userName: user.userName,
           isAdmin: user.isAdmin
-         },
-        process.env.JWT_SECRET_KEY,
-        { expiresIn: "1h" }
+        },
+        process.env.JWT_SECRET_KEY 
       );
-      res.status(201).json({ message: "successfully logged in", token: token });
-    } else {
-      res.status(400).json({ message: "incorrect username or password" });
+      return res.status(201).json({ message: "successfully logged in", token: token });
+    } 
+    else {
+      return res.status(400).json({ message: "incorrect username or password" });
     }
-  } catch (err) {
+  } 
+  catch (err) {
     console.log("following error occured", err);
-    res.status(501).json({ message: err.message });
+    res.status(501).json({ message: "internal server error" });
   }
 };
 
