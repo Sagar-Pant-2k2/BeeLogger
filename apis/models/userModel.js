@@ -13,17 +13,21 @@ const userSchema = mongoose.Schema({
         type : String,
         required : true,
     },
+    "avatar" : {
+        type : String,
+        default : ""
+    },
     "isAdmin" : {
         type : Boolean,
         default : false
     },
-    "likedPosts" : [
+    "likedBlogs" : [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref : 'Post'
         }
     ],
-    "savedPosts" : [
+    "authoredBlogs" : [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref : 'Post'

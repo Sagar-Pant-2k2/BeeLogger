@@ -14,6 +14,7 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Logo from "./Logo";
 import axios from "axios";
+import { Auth } from "../context/Auth";
 
 const url = "http://localhost:3000/user/login";
 
@@ -26,15 +27,18 @@ export default function SignIn() {
   });
 
   const [warning, setWarning] = React.useState("");
-
+  const {setLoggedIn} = React.useContext(Auth);
+  const {setProfile} = React.useContext(Auth);
   const handleSubmit = async (e) => {
     if (data.password && data.userName) {
       e.preventDefault();
       try {
         const res = await axios.post(url, data);
         setWarning(() => "");
-        console.log(res.data.message);
+        console.log(res.data.userData);
         localStorage.setItem("token", res.data.token);
+        setLoggedIn(()=>true);
+        setProfile(res.data.userData);
       } catch (err) {
         setWarning(() => err.response.data.message);
       }

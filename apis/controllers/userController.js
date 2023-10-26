@@ -1,34 +1,8 @@
 const userModel = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const User = require("../models/userModel");
 
-// const register = async(req,res) => {
-
-//     const data = req.body;
-//     const newUser = new userModel({
-//         "userName" : data.userName,
-//         "password" : data.password,
-//         "realName" : data.realName
-//     });
-//     try {
-//         console.log("working til here");
-//         const flag = await userModel.find(userName === data.userName);
-//         if(flag) {
-//             console.log("pahile se h bhaii!");
-//             res.status(500).json({msg:"user already exist"});
-//         }
-//         else{
-//             await newUser.save();
-//             console.log("congo");
-//             res.status(201).json(newUser);
-//         }
-
-//     }
-//     catch(err){
-//         res.status(500).send(err);
-//     }
-
-// }
 
 const register = async (req, res) => {
   const data = req.body;
@@ -37,6 +11,7 @@ const register = async (req, res) => {
     userName: data.userName,
     password: await bcrypt.hash(data.password, salt),
     realName: data.realName,
+    avatar : "https://th.bing.com/th/id/OIP.oYT08vNDcdPwer-4OOLNHgHaE8?pid=ImgDet&w=3700&h=2467&rs=1"
   });
 
   try {
@@ -79,12 +54,15 @@ const login = async (req, res) => {
     const pass_matched = await bcrypt.compare(data.password, user.password);
     if (pass_matched) {
       const token = jwt.sign(
-        { userName: user.userName,
+        { 
+          userName: user.userName,
           isAdmin: user.isAdmin
         },
         process.env.JWT_SECRET_KEY 
       );
-      return res.status(201).json({ message: "successfully logged in", token: token });
+      const userData = {...user._doc};
+      delete userData.password;
+      return res.status(201).json({ message: "successfully logged in", token: token , userData});
     } 
     else {
       return res.status(400).json({ message: "incorrect username or password" });
@@ -96,14 +74,47 @@ const login = async (req, res) => {
   }
 };
 
-const getUser = (req, res) => {
-  const userId = req.params.id;
-  res.send(`User ID: ${userId}`);
+const getUser = async (req, res) => {
+  const UserName = req.params.userName;
+  try {
+    const user = await User.findOne({ userName:UserName });
+
+    if (!user) {
+      res.status(404).json({ message: "No such user exists" });
+      return; 
+    }
+
+
+    const {avatar,userName,realName,authoredBlogs} = user;
+    
+
+    res.status(200).json({ avatar,userName,realName,authoredBlogs });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "An error occurred while fetching user data" });
+  }
 };
 
-const deleteUser = (req, res) => {
-  res.send("deleted user");
+
+const deleteUser = async (req, res) => {
+  
+  try {
+    console.log(req.customData.userName, "deleted :)");
+    
+    const user = await User.findOne({ userName: req.customData.userName });
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+    console.log("pata chal gaya", req.customData.userName);
+    const deletedUser = await User.findOneAndDelete({ userName: req.customData.userName });
+    res.status(201).json({ message: "Deleted user successfully" });
+  } catch (err) {
+    console.log(err);
+    res.status(401).json({ message: "Could not delete" });
+  }
 };
+
 
 const updateUser = (req, res) => {
   res.send("updated user");

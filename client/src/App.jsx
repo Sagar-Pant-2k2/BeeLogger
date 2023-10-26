@@ -5,9 +5,13 @@ import Home from "./components/Home";
 import {Routes,Route,BrowserRouter} from 'react-router-dom'
 import Write from "./components/Write";
 import Profile from "./components/Profile";
+import { AuthProvider } from "./context/Auth";
+import Footer from "./components/Footer";
 export default ()=>{
   return (
     <>
+    <AuthProvider>
+
     <BrowserRouter>
     <Nav/>
       <Routes>
@@ -18,8 +22,10 @@ export default ()=>{
         <Route path="/write" element={<Write/>}></Route>
 
       </Routes>
+    <Footer/>
     </BrowserRouter>
     
+    </AuthProvider>
     </>
   )
 }

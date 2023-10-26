@@ -53,7 +53,7 @@ export default ()=>{
             
             <Preview >
                 <h2>Preview</h2>
-                <div style={{border: "2px solid black",height:"100%",padding:"0 20px",whiteSpace:'pre-wrap'}} dangerouslySetInnerHTML={{__html:value}}></div>
+                <div style={{border: "2px solid black",height:"100%",padding:"0 20px",whiteSpace:'pre-wrap',overflowWrap: "break-word"}} dangerouslySetInnerHTML={{__html:value}}></div>
                 <Button sx={{margin:"10px 0"}} variant='contained' onClick={handleSubmit}>Publish</Button>
             </Preview>
         </Container>

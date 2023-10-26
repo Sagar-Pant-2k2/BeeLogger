@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { Button,Box } from "@mui/material";
 import Dp from '../assets/ParrotWallpaper.avif';
+import { useContext } from "react";
+import { Auth } from "../context/Auth";
 const Container = styled.div`
     width: 100vw;
     padding: 20px;
@@ -36,6 +38,15 @@ const Bio = styled.div`
 `
 
 export default ()=>{
+
+    const {setLoggedIn} = useContext(Auth);
+    const {profile} = useContext(Auth);
+
+    const handleLogout = ()=>{
+        setLoggedIn(()=>false);
+        localStorage.clear();
+    }
+
     return (
         <Container>
             <Top>
@@ -44,11 +55,14 @@ export default ()=>{
                 <img src={Dp} style={{width:"100%",height:"100%",objectFit:"cover", borderRadius:"100%"}}></img>
             </ProfilePic>
             <Bio>
-                <h2>Name</h2>
-                <h4 style={{fontWeight:"normal"}}>description : Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas, iste.</h4>
+                <h2>{profile.userName}</h2>
+                <h4 style={{fontWeight:"normal"}}>
+                    Hey Im Bee_Logger
+                </h4>
                 <div>
                     <Button variant="contained" sx={{margin:"10px", minWidth:"100px"}}>Edit</Button>
-                    <Button variant="contained" sx={{margin:"10px", minWidth:"100px"}}>Logout</Button>
+                    <Button variant="contained" sx={{margin:"10px", minWidth:"100px"}}
+                    onClick={handleLogout}>Logout</Button>
             
                 </div>
                 
