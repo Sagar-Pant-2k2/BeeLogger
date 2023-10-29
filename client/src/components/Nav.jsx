@@ -50,8 +50,9 @@ export default ()=>{
     <Nav>
         <Left><Link to="/" style={{color:'inherit'}}><Logo/></Link></Left>
         <Right>
-            
+            <Link to="/blogs" style={{color:'inherit'}}>
             <h2>Blogs</h2>
+            </Link>
             <Link to="/write"><h2 style={{color:'black'}}>Write</h2></Link>
             {loggedIn?
             

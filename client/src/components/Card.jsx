@@ -1,69 +1,87 @@
-import styled from 'styled-components'
-import ImgSrc from '../assets/ParrotWallpaper.avif'
-import FavoriteIcon from '@mui/icons-material/Favorite';
-const Top = styled.div`
-    width : 100%;    
-    /* background-color: red; */
-    /* height: 150px; */
-    flex:1.5;
-    overflow: hidden;
-    /* text-overflow: hidden; */
-    /* white-space: nowrap; */
-    
-`
-const Bottom = styled.div`
-    width: 100%;
-    padding: 0px 10px;
-    flex: 1;
-    color: white;
-    background-color: black;
-    /* background-color: gold; */
-    overflow: hidden;
-    /* padding: 10px; */
-`
-const Likes = styled.div`
-    width: 100%;
-    padding: 2px 10px;
-    direction: rtl;
-    flex: 0.25;
-    display: flex;
-    align-items: center;
-    background-color: black;
-    color: white;
-`
 
+import styled from 'styled-components';
+import dp from '../assets/PlaneBackground.jpg';
 const Container = styled.div`
 display: flex;
-flex-direction: column;
-    width: 350px;
-    height: 300px;
+overflow: hidden;
+    margin: 20px;
     border-radius: 20px;
-    overflow: hidden;
-    /* background-color: red; */
-    margin: 10px;
-    box-shadow: 2px -5px 5px 0 #3a3a3a;
-    transition: transform 0.3s ease;
-    &:hover{
-        transform: scale(1.05);
-     }
-    @media screen and (max-width:700px){
-        width: 250px;
+    height: 200px;
+   width: 800px;
+    @media screen and (max-width:1000px){
+        width: 600px;
     }
+    @media screen and (max-width:600px){
+        width: 500px;
+        height: 150px;
+    }
+    @media screen and (max-width:500px){
+        width: 300px;
+    }
+    background-color: #c0d4d4;
+`
+const Left = styled.div`
+    flex: 4;
+    padding: 5px;
+    /* background-color: red; */
+    flex-shrink: 0;
+`
+const Right = styled.div`
+
+display: flex;
+flex-direction: column;
+justify-content: space-evenly;
+overflow: hidden;
+white-space: nowrap;
+    flex: 7;
+font-size: 20px;
+text-overflow: ellipsis;
+`
+const Title = styled.div`
+    font-size: 30px;
+    font-weight: bold;
+    flex: 2;
+
+`
+const DateTime = styled.div`
+    flex: 1;
+    font-size: 14px;
+    width: 100%;
+    color: #383333;
+`
+const Summary = styled.div`
+
+    width: 100%; 
+    flex: 3;
+ 
+  
+`
     
+
+const Likes = styled.div`
+    flex: 1;
+    width: 100%;
+    padding: 0 5px;
 `
 export default ()=>{
     return (
         <Container>
-            <Top>
-                <img src={ImgSrc} style={{objectFit:'cover',width:'100%',height:'100%'} }></img>
-            </Top>
-            <Bottom>
-                <h2>Title</h2>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit, molestias, eveniet tenetur architecto doloremque error commodi blanditiis id cumque eaque saepe asperiores quod voluptate distinctio libero atque officiis nemo eos non pariatur ipsa dicta est aspernatur. Deleniti, sequi eius vero dolores modi praesentium. Optio iure vero itaque amet, pariatur animi, magnam libero quas, magni maxime quidem dicta totam omnis officiis et aperiam id porro impedit illo minus nihil iusto voluptate ad? Suscipit neque animi quae dolores optio consequatur fuga id illo, dolorem officiis soluta cum, perferendis molestias beatae aliquid earum ipsum eaque itaque. Nihil assumenda quas in, voluptates expedita ex.</p>
-            
-            </Bottom>
-            <Likes>5 <FavoriteIcon/> </Likes>
+            <Left><img src={dp} style={{width:"100%",height:"100%",borderRadius:"20px",objectFit:"cover"}}></img></Left>
+            <Right>
+                <Title>
+                    Title
+                </Title>
+                <DateTime>
+                    <p>created at xyz by xyz</p>
+                </DateTime>
+                
+                <Summary>
 
-         </Container>
+                summary Lorem ipsum dolor sit amet consectetur adipisicing Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab numquam suscipit accusamus voluptas quos doloribus enim esse corporis libero dicta aliquam omnis, ratione laborum, iure eius distinctio sed quam facere? elit. Dolor, cum!
+                </Summary>
+                <Likes>Likes</Likes>
+            </Right>
+
+        </Container>
     )
 }

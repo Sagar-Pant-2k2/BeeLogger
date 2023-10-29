@@ -7,6 +7,7 @@ import Write from "./components/Write";
 import Profile from "./components/Profile";
 import { AuthProvider } from "./context/Auth";
 import Footer from "./components/Footer";
+import Blogs from "./components/Blogs";
 export default ()=>{
   return (
     <>
@@ -20,6 +21,7 @@ export default ()=>{
         <Route path="/profile" element={<Profile/>}></Route>
         <Route path="/" element={<Home/>}></Route>
         <Route path="/write" element={<Write/>}></Route>
+        <Route path="/blogs" element={<Blogs/>}></Route>
 
       </Routes>
     <Footer/>

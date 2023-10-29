@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import Logo from "./Logo"
 import Card from "./Card"
 import ImgSrc from '../assets/ParrotWallpaper.avif'
+import Gif from '../assets/typing.gif';
 const Container = styled.div`
     display: flex;
     flex-direction: column;
@@ -23,15 +24,36 @@ const Top = styled.div`
     
 `
 const Mid = styled.div`
-    min-height:100vh;
+    min-height:50vh;
     width: 100vw;
-
+    overflow: hidden;
+    background-color: black;
+    /* background-color: #e8566e; */
+    color: white;
     /* background-color: #bbdaf6; */
     display: flex;
-    flex-direction: column;
+    /* flex-direction: column; */
+    @media screen and (max-width:1000px){
+        flex-direction: column;
+    }
     align-items: center;
     justify-content: center;
     
+`
+const First = styled.div`
+    flex: 1;
+`
+const Second = styled.div`
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+padding: 20px;
+font-size: 20px;
+font-weight: 2000;
+font-family: cursive;
+/* background-color: red; */
+    flex: 1;
 `
 
 const H1 = styled.h1`
@@ -47,13 +69,20 @@ export default ()=>{
         <Logo/><H1>Where Your Words Take Flight</H1>
         </Top>
         <Mid>
-            <div className="first">
+            <First>
+                <img src={Gif} style={{objectFit:'cover'}}></img>
+            </First>
+            <Second>
 
-            </div>
-            <div className="second">
+<p>
 
-        BeeLogger is your one-stop destination for the world of blogging, where creativity knows no bounds. Our platform offers a user-friendly and intuitive space for individuals to not only craft their own compelling blogs but also discover and connect with a thriving community of writers and thinkers. With BeeLogger, you can unleash your inner wordsmith and share your thoughts, stories, and ideas with the world. Whether you're a seasoned blogger or just dipping your toes into the blogosphere, our platform caters to all levels of expertise. Create thought-provoking content, engage with fellow bloggers, and foster connections by following your favorite writers. BeeLogger is more than just a blogging platform; it's a dynamic, interactive space where ideas flourish, voices are heard, and communities are built around the art of storytelling. Join us and embark on a journey of self-expression and exploration through the power of words.
-            </div>
+        BeeLogger is your one-stop destination for the world of blogging, where creativity knows no bounds.
+</p>
+    <p>
+     Our platform offers a user-friendly and intuitive space for individuals to not only craft their own compelling blogs but also discover and connect with a thriving community of writers and thinkers. 
+    </p>    
+     With BeeLogger, you can unleash your inner wordsmith and share your thoughts, stories, and ideas with the world. Whether you're a seasoned blogger or just dipping your toes into the blogosphere, our platform caters to all levels of expertise.
+            </Second>
             
         </Mid>
         
