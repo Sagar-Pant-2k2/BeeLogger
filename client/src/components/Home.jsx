@@ -10,7 +10,10 @@ const Container = styled.div`
     flex-direction: column;
     width: 100vw;
     min-height:100vh;
-    background-color: aliceblue;
+    background-color: #010c18;
+    /* background-color: #041e3c; */
+    /* background-color: aliceblue; */
+    color: aliceblue;
     `
 const Top = styled.div`
     min-height:100vh;
@@ -27,7 +30,7 @@ const Mid = styled.div`
     min-height:50vh;
     width: 100vw;
     overflow: hidden;
-    background-color: black;
+    /* background-color: black; */
     /* background-color: #e8566e; */
     color: white;
     /* background-color: #bbdaf6; */

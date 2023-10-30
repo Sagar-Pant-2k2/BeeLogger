@@ -7,15 +7,19 @@ import { useContext, useState } from 'react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import {Link} from 'react-router-dom';
 import { Auth } from '../context/Auth';
+import {DrawerContext} from '../context/ShowDrawer';
+import CloseIcon from '@mui/icons-material/Close';
 
 const Nav = styled(Box)`
   width: 100vw;
   padding: 20px;
-  background-color: #d4dadd;
+  /* background-color: #d4dadd; */
   box-shadow: 2px solid black;
   display: flex;
   align-items: center;
   justify-content: center;
+  color: white;
+  background-color: black;
   /* justify-content: center; */
 `
 const Left = styled.div`
@@ -42,9 +46,8 @@ const EditMenu = styled(MenuIcon)`
     }
 `
 export default ()=>{
-    const [show,setShow] = useState(false);
-    const {loggedIn} = useContext(Auth);
-    const {profile} = useContext(Auth);
+    const {show,setShow} = useContext(DrawerContext);
+    const {profile,loggedIn} = useContext(Auth);
     const {avatar} = profile;
   return (
     <Nav>
@@ -53,26 +56,27 @@ export default ()=>{
             <Link to="/blogs" style={{color:'inherit'}}>
             <h2>Blogs</h2>
             </Link>
-            <Link to="/write"><h2 style={{color:'black'}}>Write</h2></Link>
+            <Link to="/write" style={{color:'inherit'}}><h2>Write</h2></Link>
             {loggedIn?
             
             <Link to="/profile">
                 {
 
                     avatar===""?
-                    <AccountCircleIcon sx={{fontSize:"32px",color:'black'}}/>
+                    <AccountCircleIcon sx={{fontSize:"32px"}}/>
                     :
                 <img src={avatar} style={{height:"36px",width:"36px",borderRadius:"50%"}}></img>
                 }
             </Link>
             :
-            <Link to="/signin"><h2 style={{color:'black',textDecoration:'none'}}>Login</h2></Link>}
+            <Link to="/signin" style={{color:'inherit'}}><h2 >Login</h2></Link>}
             
             {/* <MenuIcon/> */}
         </Right>
         <Box style={{display:'flex',alignItems:'center',height:'100%'}}>
-            <EditMenu onClick={()=>{setShow(()=>!show)}}/>
-            {show && <Drawer/>}
+            {show?<CloseIcon onClick={()=>{setShow(()=>!show)}}/>:<EditMenu onClick={()=>{setShow(()=>!show)}}/>
+            }
+            
         </Box>
     </Nav>
   )

@@ -8,6 +8,7 @@ import Checkbox from "@mui/material/Checkbox";
 import { Link, redirect } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
+import styled from "styled-components";
 
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
@@ -17,6 +18,16 @@ import axios from "axios";
 import { Auth } from "../context/Auth";
 
 const url = "http://localhost:3000/user/login";
+
+const Wrapper = styled.div`
+  background-color: #010c18;
+  /* color: aliceblue; */
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+`
 
 const defaultTheme = createTheme();
 
@@ -48,8 +59,10 @@ export default function SignIn() {
   };
 
   return (
+    <Wrapper>
+
     <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="xs" style={{backgroundColor:"aliceblue" ,borderRadius:"10px"}}>
         <CssBaseline />
         <Box
           sx={{
@@ -58,7 +71,7 @@ export default function SignIn() {
             flexDirection: "column",
             alignItems: "center",
           }}
-        >
+          >
           <Logo />
           <Typography component="h1" variant="h5">
             Sign in
@@ -74,12 +87,13 @@ export default function SignIn() {
               name="userName"
               autoFocus
               value={data.userName}
+              // color='red' 
               onChange={(e) =>
                 setData((data) => {
                   return { ...data, userName: e.target.value };
                 })
               }
-            />
+              />
             <TextField
               margin="normal"
               required
@@ -95,21 +109,21 @@ export default function SignIn() {
                   return { ...data, password: e.target.value };
                 })
               }
-            />
+              />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
-            />
+              />
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
               onClick={handleSubmit}
-            >
+              >
               Sign In
             </Button>
-            <Grid container>
+            <Grid container sx={{padding:"10px"}}>
               <Grid item>
                 <Link to="/signup">{"Don't have an account? Sign Up"}</Link>
               </Grid>
@@ -118,5 +132,6 @@ export default function SignIn() {
         </Box>
       </Container>
     </ThemeProvider>
+              </Wrapper>
   );
 }

@@ -15,11 +15,20 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Logo from "./Logo";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
-
+const Wrapper = styled.div`
+  background-color: #010c18;
+  /* color: aliceblue; */
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+`;
 export default () => {
   const navigate = useNavigate();
 
@@ -49,89 +58,95 @@ export default () => {
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
+    <Wrapper>
+      <ThemeProvider theme={defaultTheme}>
+        <Container
+          component="main"
+          maxWidth="xs"
+          sx={{ bgcolor: "aliceblue", borderRadius: "10px" }}
         >
-          <Logo />
-          <Typography component="h1" variant="h5">
-            Sign Up
-          </Typography>
-          <div style={{ color: "red" }}>{warning}</div>
-          <Box component="form">
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="realName"
-              label="Real Name"
-              name="realName"
-              value={data.realName}
-              autoFocus
-              onChange={(e) => {
-                setData((data) => {
-                  return { ...data, realName: e.target.value };
-                });
-              }}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="userName"
-              label="User Name"
-              name="userName"
-              value={data.userName}
-              onChange={(e) => {
-                setData((data) => {
-                  return { ...data, userName: e.target.value };
-                });
-              }}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              value={data.password}
-              autoComplete="current-password"
-              onChange={(e) => {
-                setData((data) => {
-                  return { ...data, password: e.target.value };
-                });
-              }}
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={handleSubmit}
-            >
+          <CssBaseline />
+          <Box
+            sx={{
+              marginTop: 8,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Logo />
+            <Typography component="h1" variant="h5">
               Sign Up
-            </Button>
-            <Grid container>
-              <Grid item>
-                <Link to="/signin">{"already have account? Sign In"}</Link>
+            </Typography>
+            <div style={{ color: "red" }}>{warning}</div>
+            <Box component="form">
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="realName"
+                label="Real Name"
+                name="realName"
+                value={data.realName}
+                autoFocus
+                onChange={(e) => {
+                  setData((data) => {
+                    return { ...data, realName: e.target.value };
+                  });
+                }}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="userName"
+                label="User Name"
+                name="userName"
+                value={data.userName}
+                onChange={(e) => {
+                  setData((data) => {
+                    return { ...data, userName: e.target.value };
+                  });
+                }}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                value={data.password}
+                autoComplete="current-password"
+                onChange={(e) => {
+                  setData((data) => {
+                    return { ...data, password: e.target.value };
+                  });
+                }}
+              />
+              <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="Remember me"
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+                onClick={handleSubmit}
+              >
+                Sign Up
+              </Button>
+              <Grid container>
+                <Grid item>
+                  <Link to="/signin">{"already have account? Sign In"}</Link>
+                </Grid>
               </Grid>
-            </Grid>
+            </Box>
           </Box>
-        </Box>
-      </Container>
-    </ThemeProvider>
+        </Container>
+      </ThemeProvider>
+    </Wrapper>
   );
 };
