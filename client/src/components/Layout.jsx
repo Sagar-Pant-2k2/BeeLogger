@@ -5,22 +5,26 @@ import { DrawerContext } from "../context/ShowDrawer"
 import styled from "styled-components"
 import { Link } from "react-router-dom"
 import { Auth } from '../context/Auth';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
-
+// TODO - Drawer is pushing content down :(
 const Drawer = styled.div`
 
     align-items: center;
-    display: flex;
+    display: none;
     justify-content: space-evenly;
     background-color: black;
     color: aliceblue;
+    @media screen and (max-width:720px){
+        display: flex;
+    }
 `
 
 export default ({children})=>{
     const {profile,loggedIn} = useContext(Auth);
     const {avatar} = profile;
     
-    const {show} = useContext(DrawerContext);
+    const {show,setShow} = useContext(DrawerContext);
     return (
         <>
         <Nav/>
@@ -49,7 +53,10 @@ export default ({children})=>{
     
         </Drawer>
         }
+        <div className="content" onClick={()=>{show && setShow(()=>!show)}}>
         {children}
+        </div>
+
         <Footer/>
         </>
     )

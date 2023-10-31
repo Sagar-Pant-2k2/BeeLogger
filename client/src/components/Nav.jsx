@@ -45,6 +45,14 @@ const EditMenu = styled(MenuIcon)`
         display: block;
     }
 `
+const EditCloseIcon = styled(CloseIcon)`
+    display: none;
+    font-weight: bold;
+    font-size: 36px;
+    @media screen and (max-width:720px){
+        display: block;
+    }
+`
 export default ()=>{
     const {show,setShow} = useContext(DrawerContext);
     const {profile,loggedIn} = useContext(Auth);
@@ -74,7 +82,7 @@ export default ()=>{
             {/* <MenuIcon/> */}
         </Right>
         <Box style={{display:'flex',alignItems:'center',height:'100%'}}>
-            {show?<CloseIcon onClick={()=>{setShow(()=>!show)}}/>:<EditMenu onClick={()=>{setShow(()=>!show)}}/>
+            {show?<EditCloseIcon onClick={()=>{setShow(()=>!show)}}/>:<EditMenu onClick={()=>{setShow(()=>!show)}}/>
             }
             
         </Box>

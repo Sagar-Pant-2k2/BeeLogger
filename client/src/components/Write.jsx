@@ -2,6 +2,7 @@ import { Button, Hidden } from "@mui/material";
 import React, { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 const Container = styled.div`
   width: 100vw;
@@ -63,12 +64,16 @@ export default () => {
     "code",
     "align",
   ];
+  const navigate = useNavigate();
   const handleSubmit = ()=>{
     const token = localStorage.getItem('token');
-    {token?console.log(token):console.log("hemlo")}
+    if(!token) {
+      navigate('/signin');
+    }
   }
   return (
     <Container>
+      
       <h1 style={{ margin: "0px 10px" }}>share your story here</h1>
       <p>
         <ReactQuill

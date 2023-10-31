@@ -9,6 +9,8 @@ const Container = styled.div`
     /* min-height: 100vh; */
     display: flex;
     flex-direction: column;
+    background-color: #010c18;
+    color: aliceblue;
 `
 
 const Top = styled.div`

@@ -48,6 +48,9 @@ export default function SignIn() {
         setWarning(() => "");
         console.log(res.data.userData);
         localStorage.setItem("token", res.data.token);
+        console.log(JSON.stringify(res.data.userData));
+        localStorage.setItem('profile',JSON.stringify(res.data.userData));
+        localStorage.setItem('loggedIn',true);
         setLoggedIn(()=>true);
         setProfile(res.data.userData);
       } catch (err) {
