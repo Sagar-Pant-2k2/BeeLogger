@@ -18,6 +18,24 @@ const Container = styled.div`
     
    
 `
+const Drawer = styled.div`
+
+display: none;
+/* height: 100vh; */
+/* z-index: 100; */
+position: relative;
+background-color: ${(props)=>props.theme.contrastBgColor};
+color: ${(props)=>props.theme.textColor};
+width: 100%;
+right: 0;
+@media screen and (max-width : 720px){
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+`
 const Icontainer = styled.div`
     display: none;
     @media screen and (max-width : 720px){
@@ -29,6 +47,7 @@ const Left = styled.div`padding: 10px; flex:1; display:flex; align-items:center;
 const Right = styled.div`
 padding: 10px; flex:1; display:flex; justify-content:flex-end; h2{margin:0px 10px}
 align-items: center;
+
 @media screen and (max-width: 720px){
         display: none;
     }
@@ -39,14 +58,13 @@ export default ()=>{
     const theme =  (currentTheme==='light')?lightTheme:darkTheme;
     const [drawer,setDrawer] = useState(false);
     const toggleDrawer = (e)=>{setDrawer(()=>{
-        
         return drawer===false?true:false})}
-    return (
+    return (<>
         <Container theme={theme}>
-           <Left>
-           <Link style={{color:"inherit", textDecoration:"none"}} to="/"><div style={{display:"flex"}}><h1>Bee</h1><h1 style={{color:"#3189cc"}}>Logg</h1><h1>er</h1></div>
-           </Link>
-           {
+        <Left>
+        <Link style={{color:"inherit", textDecoration:"none"}} to="/"><div style={{display:"flex"}}><h1>Bee</h1><h1 style={{color:"#3189cc"}}>Logg</h1><h1>er</h1></div>
+        </Link>
+        {
             <Icontainer onClick={toggleDrawer}>
             {!drawer?
                 <h1><AiOutlineMenu/></h1>:
@@ -60,8 +78,21 @@ export default ()=>{
             
             
             
+            
             <h2 onClick={()=>toggleTheme()}>{currentTheme==='light'?<MdModeNight/>:<MdLightMode/>}</h2>
             </Right>
-        </Container>
-    )
-}
+            </Container>
+            {drawer?
+                <Drawer theme={theme}>
+                <Link to="/blogs" style={{color:"inherit",textDecoration:"none"}}><h3>Blogs</h3></Link>
+            <Link to="/write" style={{color:"inherit",textDecoration:"none"}}><h3>Write</h3></Link>
+            <Link to="/login" style={{color:"inherit",textDecoration:"none"}}><h3>Login</h3></Link>
+            
+            
+            
+            
+            <h3 onClick={()=>toggleTheme()}>{currentTheme==='light'?"Night Mode":"Day Mode"}</h3>
+                </Drawer>:<></>}
+            </>
+            )
+        }
