@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Wrapper from "../../components/Wrapper";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import axios from 'axios';
 const SignupContainer = styled.div`
     display: flex;
     flex-direction: column;
@@ -48,18 +48,55 @@ const SignupPage = () => {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
+  const handleSignup = async (e) => {
+  e.preventDefault();
+  const data = {
+    username: username,
+    email: email,
+    password: password,
+  };
+  const apiUrl = 'http://localhost:3000/user/register';
 
-    const handleSignup = (e) => {
-        e.preventDefault();
-        // Add your signup logic here
-        console.log("Username:", username);
-        console.log("Email:", email);
-        console.log("Password:", password);
-        // Reset the form fields if needed
-        setUsername("");
-        setEmail("");
-        setPassword("");
-    };
+  const jsonData = JSON.stringify(data);
+
+  axios
+    .post(apiUrl, jsonData, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then((response) => {
+      // Handle the response for successful registration
+      console.log('Signup successful:', response.data);
+
+      // Reset the form fields
+      setUsername('');
+      setEmail('');
+      setPassword('');
+
+      // You can also display a success message to the user
+      alert('Registration successful! You can now log in.');
+    })
+    .catch((error) => {
+      // Handle errors more gracefully
+      console.error('Signup failed:', error);
+
+      // Display an error message to the user based on the error response
+      if (error.response) {
+        if (error.response.status === 400) {
+          alert('Registration failed: User with the same email already exists.');
+        } else {
+          alert('Registration failed: An error occurred. Please try again later.');
+        }
+      } else {
+        alert('Network error: Unable to connect to the server.');
+      }
+    });
+};
+
+
+      
 
     return (
         <Wrapper>
@@ -72,18 +109,22 @@ const SignupPage = () => {
                     id="username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
+                    required
                     />
 
                 <FormLabel htmlFor="email">Email:</FormLabel>
                 <FormInput
+                required
                     type="email"
                     id="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    
                     />
 
                 <FormLabel htmlFor="password">Password:</FormLabel>
                 <FormInput
+                required
                     type="password"
                     id="password"
                     value={password}

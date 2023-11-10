@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Wrapper from "../../components/Wrapper";
-
+import axios from "axios";
 const LoginContainer = styled.div`
     display: flex;
     flex-direction: column;
@@ -48,16 +48,51 @@ const LoginButton = styled.button`
 const LoginPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
-    const handleLogin = (e) => {
+    const navigate = useNavigate();
+    const handleLogin = async (e) => {
         e.preventDefault();
-        // Add your login logic here
-        console.log("Email:", email);
-        console.log("Password:", password);
-        // Reset the form fields if needed
-        setEmail("");
-        setPassword("");
-    };
+        const data = {
+          email: email, // Assuming the user logs in with their email
+          password: password,
+        };
+        const apiUrl = 'http://localhost:3000/user/login';
+      
+        const jsonData = JSON.stringify(data);
+      
+        try {
+          const response = await axios.post(apiUrl, jsonData, {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+      
+          // Handle the response for successful login
+          console.log('Login successful:', response.data);
+      
+          // Perform any actions you need upon successful login
+      
+          // Use a programmatic navigation method, e.g., React Router's useHistory
+          // For example, if you're using React Router v6:
+          // import { useNavigate } from 'react-router-dom';
+          // const navigate = useNavigate();
+          navigate('/');
+      
+        } catch (error) {
+          console.error('Login failed:', error);
+      
+          // Display an error message to the user based on the error response
+          if (error.response) {
+            if (error.response.status === 401) {
+              alert('Login failed: Invalid credentials.');
+            } else {
+              alert('Login failed: An error occurred. Please try again later.');
+            }
+          } else {
+            alert('Network error: Unable to connect to the server.');
+          }
+        }
+      };
+      
 
     return (
         <Wrapper>
@@ -70,6 +105,7 @@ const LoginPage = () => {
                     id="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    required
                     />
 
                 <FormLabel htmlFor="password">Password:</FormLabel>
@@ -77,10 +113,11 @@ const LoginPage = () => {
                     type="password"
                     id="password"
                     value={password}
+                    required
                     onChange={(e) => setPassword(e.target.value)}
                     />
 
-                <LoginButton type="submit">Log In</LoginButton>
+                <LoginButton type="submit" onClick={handleLogin}>Log In</LoginButton>
             </LoginForm>
             new to platform ? <Link to="/register">register</Link>
         </LoginContainer>

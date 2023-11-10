@@ -10,7 +10,7 @@ require('dotenv').config();
 app.use(express.json());
 app.use("/",(req,res,next)=>{
     console.log(req.body);
-    console.log(req.body);
+    
     next();
 })
 

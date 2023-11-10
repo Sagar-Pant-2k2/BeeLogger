@@ -3,76 +3,73 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const User = require("../models/userModel");
 
-
 const register = async (req, res) => {
   const data = req.body;
   const salt = await bcrypt.genSalt(5);
   const newUser = new userModel({
-    userName: data.userName,
+    userName: data.username,
     password: await bcrypt.hash(data.password, salt),
-    realName: data.realName,
-    avatar : "https://th.bing.com/th/id/OIP.oYT08vNDcdPwer-4OOLNHgHaE8?pid=ImgDet&w=3700&h=2467&rs=1"
+    email: data.email,
   });
-
   try {
     console.log("Working until here");
 
     // Use findOne to check if a user with the same userName exists
-    const existingUser = await userModel.findOne({ userName: data.userName });
+    const existingUser = await userModel.findOne({ email: data.email });
 
     if (existingUser) {
       console.log("User already exists!");
-      return res.status(400).json({ message: "UserName not available" });
+      return res.status(400).json({ message: "user with same mail exist" });
     }
-
-
     // If no existing user is found, save the new user
     await newUser.save();
-
     console.log("User created successfully!");
-    res.status(201).json({message: "new user created"});
+    return res.status(201).json({ message: "New user created" });
   } catch (err) {
-
-    //if realName is missing
-    if(!data.realName) {
-      return res.status(500).json({message : "realName required"});
-      console.log("realname")
-    }
+    console.error(err); // Log the error for debugging
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
+
 const login = async (req, res) => {
-  console.log("was here")
   try {
     const data = req.body;
-    console.log(data);
-    const user = await userModel.findOne({userName: data.userName});
-    if (!user) { 
-      console.log("user not found"); 
-      return res.status(400).json({ message: "incorrect username or password" });}
-    const pass_matched = await bcrypt.compare(data.password, user.password);
-    if (pass_matched) {
-      const token = jwt.sign(
-        { 
-          userName: user.userName,
-          isAdmin: user.isAdmin
-        },
-        process.env.JWT_SECRET_KEY 
-      );
-      const userData = {...user._doc};
-      delete userData.password;
-      return res.status(201).json({ message: "successfully logged in", token: token , userData});
-    } 
-    else {
-      return res.status(400).json({ message: "incorrect username or password" });
+    const user = await userModel.findOne({ email: data.email });
+
+    if (!user) {
+      return res.status(401).json({ message: "Incorrect email or password" });
     }
-  } 
-  catch (err) {
-    console.log("following error occured", err);
-    res.status(501).json({ message: "internal server error" });
+
+    const passMatched = await bcrypt.compare(data.password, user.password);
+
+    if (passMatched) {
+      const token = jwt.sign(
+        {
+          email: user.email,
+          isAdmin: user.isAdmin,
+        },
+        process.env.JWT_SECRET_KEY
+      );
+
+      // Remove sensitive data (password) from the user object
+      const userData = { ...user._doc };
+      delete userData.password;
+
+      return res.status(201).json({
+        message: "Successfully logged in",
+        token: token,
+        userData,
+      });
+    } else {
+      return res.status(401).json({ message: "Incorrect email or password" });
+    }
+  } catch (err) {
+    console.error("Error occurred:", err);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
+
 
 const getUser = async (req, res) => {
   const UserName = req.params.userName;

@@ -1,4 +1,5 @@
 const postModel = require("../models/postModel");
+const userModel = require('../models/userModel');
 
 const createPost = async (req, res) => {
   const data = req.body;
@@ -6,16 +7,18 @@ const createPost = async (req, res) => {
   const newPost = new postModel({
     title: data.title,
     content: data.content,
+    author: req.userId, 
   });
 
   try {
     const savedPost = await newPost.save();
     res.status(201).json(savedPost);
   } catch (err) {
-    console.error("Error creating post");
+    console.error("Error creating post", err);
     res.status(500).send("Error creating post");
   }
 };
+
 
 const getAllPosts = async (req, res) => {
     try {
@@ -36,8 +39,40 @@ const deletePost = (req, res) => {
   res.send("deleted post");
 };
 
-const likePost = (req, res) => {
-  res.send("Post liked");
+const likePost =  async (req, res) => {
+  const { postId, userId } = req.body;
+
+  try {
+    // Check if the user has already liked the post
+    const post = await postModel.findById(postId);
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    if (post.likes.includes(userId)) {
+      return res.status(400).json({ message: 'You have already liked this post' });
+    }
+
+    // Add the user's like to the post
+    post.likes.push(userId);
+
+    // Update the post in the database
+    await post.save();
+
+    // Update the user's likedPosts
+    const user = await userModel.findById(userId);
+    if (user) {
+      user.likedPosts.push(postId);
+      await user.save();
+    } else {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json({ message: 'Post liked', likes: post.likes.length });
+  } catch (error) {
+    console.error('Error while liking the post', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
 };
 
 const publishPost = (req, res) => {
@@ -49,7 +84,6 @@ module.exports = {
   getAllPosts,
   createPost,
   updatePost,
-  publishPost,
   likePost,
   deletePost,
 };

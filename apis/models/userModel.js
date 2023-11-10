@@ -1,13 +1,14 @@
 const mongoose = require('mongoose');
 
 const userSchema = mongoose.Schema({
-    "realName" : {
+    "userName" : {
         type:String,
         required : true
     },
-    "userName" : {
+    "email" : {
         type:String,
         required:true,
+        unique : true
     },
     "password" : {
         type : String,
@@ -15,7 +16,7 @@ const userSchema = mongoose.Schema({
     },
     "avatar" : {
         type : String,
-        default : ""
+        default : "https://th.bing.com/th/id/OIP.oYT08vNDcdPwer-4OOLNHgHaE8?pid=ImgDet&w=3700&h=2467&rs=1"
     },
     "isAdmin" : {
         type : Boolean,
